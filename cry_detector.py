@@ -1,13 +1,22 @@
 import RPi.GPIO as GPIO
 import numpy as np
 import librosa as lr
-import sounddevice as sd
+import pyaudio as ad
 import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 
-# Import model
-model = tf.keras.models.load_model('cry_detector.h5')
+#Load .h5 model (on  pc)
+model = tf.keras.models.load_model("cry_detector.h5")
 
-# preprocessing function, sound device grants a NumPy array, which needs to be made a tensor
+#convert model into a tensorflow lite model to run on pi
+converter = tf.lite.TFLiteConverter.from_keras_model("cry_detector.h5")
+tflite_model = converter.convert()
+
+#save model
+with open('cry_detector.h5', 'wb') as f:
+    f.write(tflite_model)
+
+# preprocessing function, pyaudio grants raw audio,, need a NumPy array
 def preprocess(audio): 
     #model expects a flat shape
     audio = audio.flatten()
