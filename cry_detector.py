@@ -1,13 +1,10 @@
 import RPi.GPIO as GPIO
 import numpy as np
 import librosa as lr
-import sounddevice as sd
-import tensorflow as tf
+import pyaudio as ad
+from tflite_runtime.interpreter import Interpreter
 
-# Import model
-model = tf.keras.models.load_model('cry_detector.h5')
-
-# preprocessing function, sound device grants a NumPy array, which needs to be made a tensor
+# preprocessing function, pyaudio grants raw audio,, need a NumPy array
 def preprocess(audio): 
     #model expects a flat shape
     audio = audio.flatten()
@@ -23,20 +20,37 @@ def preprocess(audio):
         zero_padding = np.zeros(96000 - len(audio), dtype=np.float32)
         audio = np.concatenate([zero_padding, audio],0)
 
-    #convert audio to a tensor
-    wav = tf.convert_to_tensor(audio, dtype=tf.float32)
-
-    #converts waveform into 20ms windows with 2ms hop
+    #converts waveform into 20ms windows with 2ms hop using librosa
     spectrogram = tf.signal.stft(wav, frame_length=320, frame_step=32)
 
     #drop phase and keep magnitude
-    spectrogram = tf.abs(spectrogram)
+    spectrogram = np.abs(spectrogram)
 
     #log scaling helps noise become visible in the spectrograms especially the quiet clips
-    spectrogram = tf.math.log(spectrogram + 1e-6)
+    spectrogram = np.math.log(spectrogram + 1e-6)
 
     #channel dimension for CNN (convolutional neural network)
-    spectrogram = tf.expand_dims(spectrogram, axis=2) #set channel, 3D tensor
-    spectrogram = tf.expand_dims(spectrogram, axis=0) #set batch, 4D tensor
+    spectrogram = np.expand_dims(spectrogram, axis=2) #set channel, 3D tensor
+    spectrogram = np.expand_dims(spectrogram, axis=0) #set batch, 4D tensor
     
-    return spectrogram
+    return spectrogram.astype(np.float32)
+
+#Load TFlite model and allocate tensors
+interpreter = Interpreter(model_path="cry_detector.tflite")
+interpreter.allocate_tensors()
+
+#Get input and output tensors
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+
+spectrogram = preprocess(audio)
+interpreter.set_tensor(input_details[0]['index'], spectrogram)
+
+interpreter.invoke()
+
+#Function get_tensor() returns copy of tensor data
+#Use tensor() in order to get a pointer to the tensor
+output_data = interpreter.get_tensor(output_details[0]['index'])
+print(output_data)
+
+input
