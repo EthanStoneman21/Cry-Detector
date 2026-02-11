@@ -3,6 +3,7 @@ import numpy as np
 import pyaudio as pa
 import librosa as lr
 from tflite_runtime.interpreter import Interpreter
+import time
 
 def record():
     CHUNK = 1024
@@ -70,23 +71,41 @@ def preprocess(audio):
     
     return spectrogram.astype(np.float32)
 
-audio = record()
+def run():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(17, GPIO.OUT)
 
-#Load TFlite model and allocate tensors
-interpreter = Interpreter(model_path="cry_detector.tflite")
-interpreter.allocate_tensors()
+    while (1):
+        audio = record()
 
-#Get input and output tensors
-input_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details()
+        #Load TFlite model and allocate tensors
+        interpreter = Interpreter(model_path="cry_detector.tflite")
+        interpreter.allocate_tensors()
 
-spectrogram = preprocess(audio)
-interpreter.set_tensor(input_details[0]['index'], spectrogram)
+        #Get input and output tensors
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
 
-interpreter.invoke()
+        spectrogram = preprocess(audio)
+        interpreter.set_tensor(input_details[0]['index'], spectrogram)
 
-#Function get_tensor() returns copy of tensor data
-#Use tensor() in order to get a pointer to the tensor
-output_data = interpreter.get_tensor(output_details[0]['index'])
-print(output_data)
+        interpreter.invoke()
 
+        #Function get_tensor() returns copy of tensor data
+        #Use tensor() in order to get a pointer to the tensor
+        output_data = interpreter.get_tensor(output_details[0]['index'])
+        print(output_data)
+        pred_num = float(output_data.squeeze()) #Extract just the prediction number to use for pi
+        print(pred_num)
+
+        if (pred_num >= 0.55): #Prediction number, closer to 1 means more accurate set off logic when a close number detected
+            GPIO.output(17, GPIO.HIGH)
+        else:
+            GPIO.output(17, GPIO.LOW)
+
+        exit = input("Would you like to continue? (y or n) ")
+
+        if exit == "n" or exit == "N":
+            GPIO.cleanup()
+            return
+run()
