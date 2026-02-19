@@ -132,7 +132,8 @@ def run():
     global counter, glob_counter, running, max_highs
     setup()
 
-    motor_thread = threading.Thread(target=motor_spin, daemon=True).start()
+    #motor thread
+    threading.Thread(target=motor_spin, daemon=True).start()
 
     try:
         while (1):
