@@ -164,13 +164,15 @@ def run():
                 running = True
                 counter += 1 #increase counters
                 glob_counter += 1
+                if max_highs < counter:
+                    max_highs = counter
             else:
                 running = False
                 counter = 0 #reset in a row counter
 
     except KeyboardInterrupt:
         cleanup()
-        print("\nHighs in a row: " + str(counter))
+        print("\nMax Highs in a row: " + str(max_highs))
         print("Total Highs: " + str(glob_counter))
 
 counter = 0
