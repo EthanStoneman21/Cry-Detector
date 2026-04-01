@@ -10,7 +10,7 @@ step_sleep = 0.002
 
 step_count = 4096
 
-direction = False
+direction = True #true for clockwise false for counter - clockwise
 
 step_sequence = [[1,0,0,1],
                  [1,0,0,0],
@@ -51,6 +51,7 @@ try:
             GPIO.output(motor_pins[pin], step_sequence[motor_step_counter][pin])
         if direction==True:
             motor_step_counter = (motor_step_counter - 1) % 8
+            print("1")
         elif direction==False:
             motor_step_counter = (motor_step_counter + 1) % 8
         else:

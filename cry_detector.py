@@ -8,6 +8,8 @@ from tflite_runtime.interpreter import Interpreter
 import time
 import os, contextlib
 import threading
+from signal import signal, SIGTERM, SIGHUP, pause
+from rpi_lcd import LCD
 
 @contextlib.contextmanager
 def suppress_logs():
@@ -93,6 +95,7 @@ def cleanup():
     GPIO.output(in3, GPIO.LOW)
     GPIO.output(in4, GPIO.LOW)
     GPIO.cleanup()
+    lcd.clear()
 
 def setup():
     GPIO.setmode(GPIO.BCM)
@@ -110,10 +113,12 @@ def setup():
 def motor_spin():
     global in1, in2, in3, in4, step_sleep, direction, motor_pins, motor_step_counter, running
 
+    motor_pins = [in1, in2, in3, in4]
+
     while(1):
 
-        motor_pins = [in1, in2, in3, in4]
         motor_step_counter = 0
+        time.sleep(0.01)
 
         while running:
             for pin in range(0, len(motor_pins)):
@@ -127,9 +132,12 @@ def motor_spin():
                 cleanup()
                 exit(1)
             time.sleep(step_sleep)
+            
+def safe_exit(signum, frame):
+    exit(1)
 
 def run():
-    global counter, glob_counter, running, max_highs
+    global counter, glob_counter, running, max_highs, lcd, interpreter
     setup()
 
     #motor thread
@@ -140,40 +148,37 @@ def run():
             audio = record()
 
             with suppress_logs():
-                #Load TFlite model and allocate tensors
-                interpreter = Interpreter(model_path="cry_detector.tflite")
-                interpreter.allocate_tensors()
 
-            #Get input and output tensors
-            input_details = interpreter.get_input_details()
-            output_details = interpreter.get_output_details()
+                #Get input and output tensors
+                input_details = interpreter.get_input_details()
+                output_details = interpreter.get_output_details()
 
-            spectrogram = preprocess(audio)
-            interpreter.set_tensor(input_details[0]['index'], spectrogram)
+                spectrogram = preprocess(audio)
+                interpreter.set_tensor(input_details[0]['index'], spectrogram)
 
-            interpreter.invoke()
+                interpreter.invoke()
 
-            #Function get_tensor() returns copy of tensor data
-            #Use tensor() in order to get a pointer to the tensor
-            output_data = interpreter.get_tensor(output_details[0]['index'])
-            print(output_data)
-            pred_num = float(output_data.squeeze()) #Extract just the prediction number to use for pi
-            print(pred_num)
+                #Function get_tensor() returns copy of tensor data
+                #Use tensor() in order to get a pointer to the tensor
+                output_data = interpreter.get_tensor(output_details[0]['index'])
+                print(output_data)
+                pred_num = float(output_data.squeeze()) #Extract just the prediction number to use for pi
+                print(pred_num)
 
-            if (pred_num >= 0.60): #Prediction number, closer to 1 means more accurate set off logic when a close number detected
-                running = True
-                counter += 1 #increase counters
-                glob_counter += 1
-                if max_highs < counter:
-                    max_highs = counter
-            else:
-                running = False
-                counter = 0 #reset in a row counter
+                if (pred_num >= 0.40): #Prediction number, closer to 1 means more accurate set off logic when a close number detected
+                    running = True
+                    counter += 1 #increase counters
+                    glob_counter += 1
+                    if max_highs < counter:
+                        max_highs = counter
+                else:
+                    running = False
+                    counter = 0 #reset in a row counter
+                lcd.text("Max Highs b2b:" + str(max_highs), 1) #Max Highs in a row
+                lcd.text("Total Highs:" + str(glob_counter), 2) #Total highs for the whole run time
 
     except KeyboardInterrupt:
         cleanup()
-        print("\nMax Highs in a row: " + str(max_highs))
-        print("Total Highs: " + str(glob_counter))
 
 counter = 0
 glob_counter = 0
@@ -186,7 +191,7 @@ in4 = 22
 
 step_sleep = 0.002
 
-direction = False
+direction = True
 
 step_sequence = [[1,0,0,1],
                 [1,0,0,0],
@@ -197,5 +202,14 @@ step_sequence = [[1,0,0,1],
                 [0,0,1,1],
                 [0,0,0,1]]
 running = False
+
+lcd = LCD()
+
+signal(SIGTERM, safe_exit) #safe exiting for lcd screen
+signal(SIGHUP, safe_exit)
+
+ #Load TFlite model and allocate tensors
+interpreter = Interpreter(model_path="cry_detector.tflite")
+interpreter.allocate_tensors()
 
 run()
