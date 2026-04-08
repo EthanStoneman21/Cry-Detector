@@ -33,7 +33,6 @@ Parvathavarthini, S., Bhuvaneswaran, U., Arun, U. M., & Sengottayan, S. (2024). 
 Ravi, N. (2025, July 23). Introduction to Python Raspberry Pi (RPiGPIO) library. GeeksforGeeks. https://www.geeksforgeeks.org/python/introduction-to-python-raspberry-pi-rpigpio-library
 
 Renotte N. (2022, April 16). Build a Deep Audio Classifier with Python and Tensorflow [Video].
-
 YouTube. https://www.youtube.com/watch?v=ZLIPkmmDJAc
 
 RonsTechHub. (2024). Raspberry Pi 4 setup (2026) [Video]. YouTube. https://www.youtube.com/watch?v=474BH2lyosM
