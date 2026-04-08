@@ -3,6 +3,9 @@
 ## Flow Chart Detailing How The Project Was Completed
 <img width="456" height="611" alt="Flow Chart Project drawio (1)" src="https://github.com/user-attachments/assets/5a38070f-6744-4b5f-b88b-c623133e02c7" />
 
+## Video Showcase Of The Completed Project (As of April 4 2026)
+https://youtu.be/qL7qEDCbsfc?si=vplIeDhwbjbvWAGM
+
 ## For Running On The Pi 4
 - Make sure to install the correct packages to the Raspberry Pi located in cry_detector.py.
 - Utilizing sudo apt.
