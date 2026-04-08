@@ -1,10 +1,14 @@
 # Machine Learning model trained and utilized using Raspberry Pi 4.
 
+## Flow Chart Detailing How The Project Was Completed
+<img width="456" height="611" alt="Flow Chart Project drawio (1)" src="https://github.com/user-attachments/assets/5a38070f-6744-4b5f-b88b-c623133e02c7" />
+
+## For Running On The Pi 4
 - Make sure to install the correct packages to the Raspberry Pi located in cry_detector.py.
 - Utilizing sudo apt.
 - Would recommend activating a .venv if more projects are planned for the Pi.
 
-# References
+## References
 
 Akrin, B. (2020, December 17). Driving a 28BYJ 48 stepper motor & ULN2003 driver with a Raspberry Pi. Ben Akrin. https://ben.akrin.com/driving-a-28byj-48-stepper-motor-uln2003-driver-with-a-raspberry-pi/
 
