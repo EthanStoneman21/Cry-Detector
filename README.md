@@ -31,6 +31,8 @@ Librosa Development Team. (n.d.). librosa.load. Librosa. https://librosa.org/doc
 
 M Heidenreich. (2021, February 7). How to use the LCD1602 I2C display with Raspberry Pi (Python tutorial with multi threading) [Video]. YouTube. https://www.youtube.com/watch?v=DHbLBTRpTWM
 
+Mekhfioui, M., Fadel, W., Hammouch, F. E., Laayati, O., Bouchouirbat, M., El Bazi, N., Satif, A., Boujiha, T., & Chebak, A. (2025). Development of a baby cry identification system using a Raspberry Pi-based embedded system and machine learning. Technologies, 13(4), 130. https://doi.org/10.3390/technologies13040130
+
 miradulo, & Kern, R. (2015, March 30). Why can't I suppress numpy warnings? StackOverflow. https://stackoverflow.com/questions/29347987/why-cant-i-suppress-numpy-warnings
 
 NeuralNine. (2019, December 14). Python Threading Explained in 8 Minutes [Video]. YouTube. https://www.youtube.com/watch?v=A_Z1lgZLSNc
