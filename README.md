@@ -50,4 +50,6 @@ Sadhish, S. (2024, February 18). Infant cry Dataset. Kaggle. https://www.kaggle.
 
 StarLabs3D. (2015). Cradle/Crib [3D model]. Thingiverse. https://www.thingiverse.com/thing:1208719
 
+Stoneman, E. (2026, April 7). Cry Detector Video Showcase [Video]. YouTube. https://www.youtube.com/watch?v=qL7qEDCbsfc
+
 Zhao, J. (2018, August 23). Answer to “How to load a tflite model in script?” Stack Overflow. https://stackoverflow.com/questions/50443411/how-to-load-a-tflite-model-in-script
