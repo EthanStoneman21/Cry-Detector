@@ -48,4 +48,6 @@ RonsTechHub. (2024). Raspberry Pi 4 setup (2026) [Video]. YouTube. https://www.y
 
 Sadhish, S. (2024, February 18). Infant cry Dataset. Kaggle. https://www.kaggle.com/datasets/sanmithasadhish/infant-cry-dataset/data
 
+StarLabs3D. (2015). Cradle/Crib [3D model]. Thingiverse. https://www.thingiverse.com/thing:1208719
+
 Zhao, J. (2018, August 23). Answer to “How to load a tflite model in script?” Stack Overflow. https://stackoverflow.com/questions/50443411/how-to-load-a-tflite-model-in-script
