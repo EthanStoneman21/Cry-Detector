@@ -23,6 +23,8 @@ Chandnani, K., Tripathy, S., Parbhakar, A. K., Takiar, K., Singhal, U., Sasikuma
 
 Chollet, F. (2017). Save and load models. TensorFlow. https://www.tensorflow.org/tutorials/keras/save_and_load
 
+EthanStoneman21. (2026). Cry-Detector. GitHub. https://github.com/EthanStoneman21/Cry-Detector
+
 Geier, M. (2015, February 18). Issue #11: How to get audio as numpy array? GitHub. https://github.com/spatialaudio/python-sounddevice/issues/11
 
 Kelania, A. K. (2026, March 25). NumPy tutorial. GeeksforGeeks. https://www.geeksforgeeks.org/python/numpy-tutorial/
