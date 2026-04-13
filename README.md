@@ -1,5 +1,4 @@
-# Machine Learning model trained and utilized using Raspberry Pi 4.
-
+# Raspberry Pi 4 Machine Learning Cry Detector with Motorized Cradle Mobile and LCD Screen
 ## Flow Chart Detailing How The Project Was Completed
 <img width="456" height="611" alt="Flow Chart Project drawio (2)" src="https://github.com/user-attachments/assets/91451282-4374-4bef-b988-b11dfb9da01a" />
 
