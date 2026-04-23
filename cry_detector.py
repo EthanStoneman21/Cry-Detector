@@ -10,6 +10,28 @@ import os, contextlib
 import threading
 from signal import signal, SIGTERM, SIGHUP, pause
 from rpi_lcd import LCD
+from dotenv import load_dotenv
+load_dotenv()
+import os
+import smtplib
+from email.message import EmailMessage
+
+def email_alert(subject, body, to):
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg['Subject'] = subject
+    msg['To'] = to
+
+    user = os.getenv("EMAIL_USER")
+    msg['From'] = user
+    password = os.getenv("EMAIL_PASS")
+
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.starttls()
+    server.login(user, password)
+    server.send_message(msg)
+    
+    server.quit()
 
 @contextlib.contextmanager
 def suppress_logs():
@@ -142,6 +164,7 @@ def run():
 
     #motor thread
     threading.Thread(target=motor_spin, daemon=True).start()
+    first = 1
 
     try:
         while (1):
@@ -171,9 +194,15 @@ def run():
                     glob_counter += 1
                     if max_highs < counter:
                         max_highs = counter
+                    if max_highs == 4 and first != 0:
+                        first = 0
+                        phone_num = os.getenv("PHONE_NUM")
+                        email_alert("Cries Detected", "Baby needs attention", phone_num)
                 else:
                     running = False
                     counter = 0 #reset in a row counter
+                    first = 1
+
                 lcd.text("Max Highs b2b:" + str(max_highs), 1) #Max Highs in a row
                 lcd.text("Total Highs:" + str(glob_counter), 2) #Total highs for the whole run time
 
