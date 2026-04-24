@@ -22,6 +22,8 @@ Chandnani, K., Tripathy, S., Parbhakar, A. K., Takiar, K., Singhal, U., Sasikuma
 
 Chollet, F. (2017). Save and load models. TensorFlow. https://www.tensorflow.org/tutorials/keras/save_and_load
 
+ClarityCoders. (2020, May 16). Create email and text message SMS alerts with Python! [Video]. YouTube. https://youtu.be/B1IsCbXp0uE
+
 EthanStoneman21. (2026). Cry-Detector. GitHub. https://github.com/EthanStoneman21/Cry-Detector
 
 Geier, M. (2015, February 18). Issue #11: How to get audio as numpy array? GitHub. https://github.com/spatialaudio/python-sounddevice/issues/11
